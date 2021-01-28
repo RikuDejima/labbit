@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+//グーグルサイン認証、firebaseでtodoの更新などを行う
+
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
@@ -15,10 +17,20 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
           title: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Image.asset(
+            "assets/images/appbar_icon/hamburger_menu.png",
+            fit: BoxFit.cover,
+            height: 32,
+          ),
+          Image.asset(
             "assets/images/appbar_icon/labbit_logo.png",
+            fit: BoxFit.cover,
+            height: 32,
+          ),
+          Image.asset(
+            "assets/images/appbar_icon/user_icon.png",
             fit: BoxFit.cover,
             height: 32,
           ),
