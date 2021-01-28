@@ -18,7 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(
-            "images/appbar_icon/labbit_logo.png",
+            "assets/images/appbar_icon/labbit_logo.png",
             fit: BoxFit.cover,
             height: 32,
           ),
