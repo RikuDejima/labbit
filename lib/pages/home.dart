@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:labbit/pages/create_account.dart';
+// import 'package:labbit/pages/create_account.dart';
 import 'package:labbit/models/user.dart';
+import 'package:labbit/pages/addtodo.dart';
+import 'package:labbit/widgets/header.dart';
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
 FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -30,11 +32,12 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isAuth = false;
   PageController pageController;
   int pageIndex = 0;
-  // User currentUser;
+  User currentUser;
 
   @override
   void initState() {
     super.initState();
+    print("I called !");
     pageController = PageController();
     googleSignIn.onCurrentUserChanged.listen((account) {
       handleSignIn(account);
@@ -49,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   handleSignIn(GoogleSignInAccount account) {
     if (account != null) {
-      createUserInFirestore();
+      // createUserInFirestore();
       print("User signed in!: $account");
       setState(() {
         isAuth = true;
@@ -61,29 +64,29 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  createUserInFirestore() async {
-    final GoogleSignInAccount user = googleSignIn.currentUser;
-    print(user);
-    final DocumentSnapshot doc = await FirebaseFirestore.instance
-        .collection("usersRef")
-        .doc(user.id)
-        .get();
-
-    if (!doc.exists) {
-      final username = await Navigator.push(
-          context, MaterialPageRoute(builder: (context) => CreateAccount()));
-      usersRef.doc(user.id).set({
-        "id": user.id,
-        "username": username,
-        // "photoUrl": user.photoUrl,
-        "email": user.email,
-        // "displayName": user.displayName,
-        // "bio": "",
-        "timestamp": timestamp,
-      });
-    }
-    currentUser = User.fromDocument(doc);
-  }
+  // createUserInFirestore() async {
+  //   final GoogleSignInAccount user = googleSignIn.currentUser;
+  //   print(user);
+  //   final DocumentSnapshot doc = await FirebaseFirestore.instance
+  //       .collection("usersRef")
+  //       .doc(user.id)
+  //       .get();
+  //
+  //   if (!doc.exists) {
+  //     final username = await Navigator.push(
+  //         context, MaterialPageRoute(builder: (context) => CreateAccount()));
+  //     usersRef.doc(user.id).set({
+  //       "id": user.id,
+  //       "username": username,
+  //       // "photoUrl": user.photoUrl,
+  //       "email": user.email,
+  //       // "displayName": user.displayName,
+  //       // "bio": "",
+  //       "timestamp": timestamp,
+  //     });
+  //   }
+  //   currentUser = User.fromDocument(doc);
+  // }
 
   @override
   void dispose() {
@@ -105,41 +108,30 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  onTap(int pageIndex) {
-    pageController.animateToPage(pageIndex,
-        duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+  onTap(int page) {
+    pageController.jumpToPage(page);
+    print("押下！");
   }
 
   buildAuthScreen() {
     return Scaffold(
-      appBar: AppBar(
-          toolbarHeight: 70,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Image.asset(
-                "assets/images/appbar_icon/hamburger_menu.png",
-                fit: BoxFit.cover,
-                height: 32,
-              ),
-              Image.asset(
-                "assets/images/appbar_icon/labbit_logo.png",
-                fit: BoxFit.cover,
-                height: 32,
-              ),
-              Image.asset(
-                "assets/images/appbar_icon/user_icon.png",
-                fit: BoxFit.cover,
-                height: 32,
-              ),
-            ],
-          )),
+      appBar: header(),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: PageView(
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+            ListView.builder(
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
+                  child: Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text(
+                      "筋トレ１００日",
+                      style: TextStyle(fontSize: 22.0),
+                    ),
+                  ),
+                );
+              },
+              itemCount: 5,
             ),
           ],
         ),
@@ -147,7 +139,10 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: Color(0xffFFFEEB),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: () => print("pressed"),
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AddTodo()));
+        },
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.

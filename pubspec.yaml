@@ -49,6 +49,7 @@ flutter:
   assets:
     - assets/images/appbar_icon/
     - assets/images/google_signin_button.png
+    - assets/images/under_bar_images/
 
   # example:
 #   fonts:
