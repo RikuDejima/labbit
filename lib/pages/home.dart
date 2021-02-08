@@ -3,9 +3,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 // import 'package:labbit/pages/create_account.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:labbit/models/user.dart';
 import 'package:labbit/pages/addtodo.dart';
 import 'package:labbit/widgets/header.dart';
+import 'package:labbit/pages/timer.dart';
+import 'package:labbit/pages/notification.dart';
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
 FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -108,9 +111,9 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  onTap(int page) {
-    pageController.jumpToPage(page);
-    print("押下！");
+  onTap(int pageIndex) {
+    pageController.animateToPage(pageIndex,
+        duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
   }
 
   buildAuthScreen() {
@@ -133,11 +136,12 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               itemCount: 5,
             ),
+            Timer(),
+            Notifications(),
           ],
         ),
       ),
       backgroundColor: Color(0xffFFFEEB),
-
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -145,7 +149,26 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
+      bottomNavigationBar: CupertinoTabBar(
+        currentIndex: pageIndex,
+        onTap: onTap,
+        activeColor: Theme.of(context).primaryColor,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              size: 35.0,
+            ),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.av_timer_rounded),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications_active),
+          ),
+        ],
+      ),
     );
   }
 
