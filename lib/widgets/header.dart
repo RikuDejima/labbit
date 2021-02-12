@@ -3,25 +3,36 @@ import 'package:flutter/material.dart';
 
 header() {
   return AppBar(
-      toolbarHeight: 70,
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Image.asset(
-            "assets/images/appbar_icon/hamburger_menu.png",
-            fit: BoxFit.cover,
-            height: 32,
-          ),
-          Image.asset(
-            "assets/images/appbar_icon/labbit_logo.png",
-            fit: BoxFit.cover,
-            height: 32,
-          ),
-          Image.asset(
-            "assets/images/appbar_icon/user_icon.png",
-            fit: BoxFit.cover,
-            height: 32,
-          ),
-        ],
-      ));
+    toolbarHeight: 50,
+    leading: IconButton(
+      icon: Icon(
+        Icons.menu,
+        color: Color(0XFFFF962C),
+        size: 35.0,
+      ),
+      alignment: Alignment.topLeft,
+      onPressed: () {
+        // Pressed Action
+      },
+    ),
+    actions: <Widget>[
+      IconButton(
+        icon: Icon(
+          Icons.account_circle,
+          color: Color(0XFFFF962C),
+          size: 35,
+        ),
+        alignment: Alignment.topRight,
+        onPressed: () {
+          // Pressed Action
+        },
+      ),
+    ],
+    title: Image.asset(
+      "assets/images/appbar_icon/labbit_logo.png",
+      fit: BoxFit.cover,
+      height: 40,
+    ),
+    centerTitle: true,
+  );
 }

@@ -138,14 +138,18 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Timer(),
             Notifications(),
+            AddTodo(),
           ],
+          controller: pageController,
+          onPageChanged: onPageChanged,
+          physics: NeverScrollableScrollPhysics(),
         ),
       ),
       backgroundColor: Color(0xffFFFEEB),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => AddTodo()));
+          pageController.animateToPage(3,
+              duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
         },
         tooltip: 'Increment',
         child: Icon(Icons.add),
@@ -154,7 +158,7 @@ class _MyHomePageState extends State<MyHomePage> {
         currentIndex: pageIndex,
         onTap: onTap,
         activeColor: Theme.of(context).primaryColor,
-        items: [
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home,
