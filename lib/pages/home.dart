@@ -155,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Icon(Icons.add),
       ),
       bottomNavigationBar: CupertinoTabBar(
-        currentIndex: pageIndex,
+        currentIndex: ,
         onTap: onTap,
         activeColor: Theme.of(context).primaryColor,
         items: <BottomNavigationBarItem>[
