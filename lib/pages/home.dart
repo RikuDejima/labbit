@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-// import 'package:labbit/pages/create_account.dart';
+import 'package:labbit/pages/create_account.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:labbit/models/user.dart';
 import 'package:labbit/pages/addtodo.dart';
@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   handleSignIn(GoogleSignInAccount account) {
     if (account != null) {
-      // createUserInFirestore();
+      createUserInFirestore();
       print("User signed in!: $account");
       setState(() {
         isAuth = true;
@@ -67,29 +67,29 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  // createUserInFirestore() async {
-  //   final GoogleSignInAccount user = googleSignIn.currentUser;
-  //   print(user);
-  //   final DocumentSnapshot doc = await FirebaseFirestore.instance
-  //       .collection("usersRef")
-  //       .doc(user.id)
-  //       .get();
-  //
-  //   if (!doc.exists) {
-  //     final username = await Navigator.push(
-  //         context, MaterialPageRoute(builder: (context) => CreateAccount()));
-  //     usersRef.doc(user.id).set({
-  //       "id": user.id,
-  //       "username": username,
-  //       // "photoUrl": user.photoUrl,
-  //       "email": user.email,
-  //       // "displayName": user.displayName,
-  //       // "bio": "",
-  //       "timestamp": timestamp,
-  //     });
-  //   }
-  //   currentUser = User.fromDocument(doc);
-  // }
+  createUserInFirestore() async {
+    final GoogleSignInAccount user = googleSignIn.currentUser;
+    print(user);
+    final DocumentSnapshot doc = await FirebaseFirestore.instance
+        .collection("usersRef")
+        .doc(user.id)
+        .get();
+
+    if (!doc.exists) {
+      final username = await Navigator.push(
+          context, MaterialPageRoute(builder: (context) => CreateAccount()));
+      usersRef.doc(user.id).set({
+        "id": user.id,
+        "username": username,
+        // "photoUrl": user.photoUrl,
+        "email": user.email,
+        // "displayName": user.displayName,
+        // "bio": "",
+        "timestamp": timestamp,
+      });
+    }
+    currentUser = User.fromDocument(doc);
+  }
 
   @override
   void dispose() {
@@ -155,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Icon(Icons.add),
       ),
       bottomNavigationBar: CupertinoTabBar(
-        currentIndex: ,
+        currentIndex: pageIndex,
         onTap: onTap,
         activeColor: Theme.of(context).primaryColor,
         items: <BottomNavigationBarItem>[

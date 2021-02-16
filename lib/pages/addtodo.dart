@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:labbit/pages/home.dart';
-import 'package:labbit/widgets/header.dart';
 
 class AddTodo extends StatefulWidget {
   @override
@@ -11,7 +9,6 @@ class _AddTodoState extends State<AddTodo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: header(),
       body: Card(
           margin: EdgeInsets.all(20.0),
           child: Container(
