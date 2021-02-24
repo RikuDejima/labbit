@@ -11,13 +11,14 @@ import 'package:labbit/pages/timer.dart';
 import 'package:labbit/pages/notification.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+PageController pageController;
 final GoogleSignIn googleSignIn = GoogleSignIn();
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 final dynamic storageRef = FirebaseStorage.instance.ref();
 final CollectionReference usersRef =
     FirebaseFirestore.instance.collection('users');
-// final CollectionReference postsRef =
-// FirebaseFirestore.instance.collection('posts');
+final CollectionReference postsRef =
+    FirebaseFirestore.instance.collection('posts');
 final DateTime timestamp = DateTime.now();
 User currentUser;
 //グーグルサイン認証、firebaseでtodoの更新などを行う
@@ -34,9 +35,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool isAuth = false;
-  PageController pageController;
   int pageIndex = 0;
-  User currentUser;
 
   @override
   void initState() {
@@ -72,10 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
   createUserInFirestore() async {
     final GoogleSignInAccount user = googleSignIn.currentUser;
     print(user);
-    final DocumentSnapshot doc = await FirebaseFirestore.instance
-        .collection("usersRef")
-        .doc(user.id)
-        .get();
+    final DocumentSnapshot doc = await usersRef.doc(user.id).get();
 
     if (!doc.exists) {
       print("yes");
@@ -86,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
         "username": username,
         "photoUrl": user.photoUrl,
         "email": user.email,
-        // "displayName": user.displayName,
+        "displayName": user.displayName,
         // "bio": "",
         "timestamp": timestamp,
       });
@@ -102,6 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   login() {
     googleSignIn.signIn();
+    print(isAuth);
   }
 
   logout() {
@@ -149,13 +146,16 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       backgroundColor: Color(0xffFFFEEB),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          pageController.animateToPage(3,
-              duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
-        },
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+      floatingActionButton: Visibility(
+        visible: pageIndex != 3 ? true : false,
+        child: FloatingActionButton(
+          onPressed: () {
+            pageController.animateToPage(3,
+                duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+          },
+          tooltip: 'Increment',
+          child: Icon(Icons.add),
+        ),
       ),
       bottomNavigationBar: CupertinoTabBar(
         currentIndex: pageIndex,
