@@ -18,19 +18,20 @@ class _AddTodoState extends State<AddTodo> {
   String goal = "";
 
   createPostInFirestore(habit, hours, minutes, goal) {
-    postsRef.doc(widget.currentUser.id).collection("usersPosts").doc().set({
+    postsRef.doc(currentUser.id).collection("usersPosts").doc().set({
       "habit": habit,
       "hours": hours,
       "minutes": minutes,
       "goal": goal,
-      "username": widget.currentUser.username
+      "username": currentUser.username
     });
   }
 
   @override
   void initState() {
     super.initState();
-    print(widget.currentUser.id);
+    // currentUser = User();
+    print(currentUser.id);
   }
 
   @override
