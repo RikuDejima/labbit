@@ -20,6 +20,7 @@ final CollectionReference usersRef =
 final CollectionReference postsRef =
     FirebaseFirestore.instance.collection('posts');
 final DateTime timestamp = DateTime.now();
+final GoogleSignInAccount user = googleSignIn.currentUser;
 User currentUser;
 //グーグルサイン認証、firebaseでtodoの更新などを行う
 
@@ -69,7 +70,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   createUserInFirestore() async {
-    final GoogleSignInAccount user = googleSignIn.currentUser;
     print(user);
     final DocumentSnapshot doc = await usersRef.doc(user.id).get();
 
@@ -120,30 +120,40 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: header(),
       body: Center(
-        child: PageView(
-          children: <Widget>[
-            ListView.builder(
-              itemBuilder: (BuildContext context, int index) {
-                return Card(
-                  child: Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Text(
-                      "筋トレ１００日",
-                      style: TextStyle(fontSize: 22.0),
-                    ),
-                  ),
-                );
-              },
-              itemCount: 5,
-            ),
-            Timer(),
-            Notifications(),
-            AddTodo(),
-          ],
-          controller: pageController,
-          onPageChanged: onPageChanged,
-          physics: NeverScrollableScrollPhysics(),
-        ),
+        child: FutureBuilder<Object>(builder: (context, snapshot) {
+          return PageView(
+            children: <Widget>[
+              FutureBuilder<QuerySnapshot>(
+                  future: postsRef.doc(user.id).collection("usersPosts").get(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      print(snapshot);
+                      final List<DocumentSnapshot> documents =
+                          snapshot.data.docs;
+
+                      return ListView(
+                        children: documents.map((document) {
+                          return Card(
+                            child: ListTile(
+                              title: Text(document['habit']),
+                            ),
+                          );
+                        }).toList(),
+                      );
+                    }
+                    return Center(
+                      child: Text('読込中...'),
+                    );
+                  }),
+              Timer(),
+              Notifications(),
+              AddTodo(),
+            ],
+            controller: pageController,
+            onPageChanged: onPageChanged,
+            physics: NeverScrollableScrollPhysics(),
+          );
+        }),
       ),
       backgroundColor: Color(0xffFFFEEB),
       floatingActionButton: Visibility(
