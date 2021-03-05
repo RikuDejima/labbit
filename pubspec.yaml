@@ -19,7 +19,8 @@ dependencies:
   cloud_firestore: ^0.16.0
 #  image_picker: ^0.6.0+2
   firebase_storage: ^7.0.0
-#  firebase_auth: ^0.8.3
+  provider: ^5.0.0
+  firebase_auth: ^0.8.3
   google_sign_in: ^4.5.9
 #  geolocator: 5.0.1
 #  uuid: ^2.0.0
@@ -34,8 +35,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  integration_test:
-    sdk: flutter
+#  integration_test:
+#    sdk: flutter
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

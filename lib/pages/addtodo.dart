@@ -12,6 +12,7 @@ class AddTodo extends StatefulWidget {
 }
 
 class _AddTodoState extends State<AddTodo> {
+  TextEditingController captionController = TextEditingController();
   String habit = "";
   String hours = "";
   String minutes = "";
@@ -23,7 +24,9 @@ class _AddTodoState extends State<AddTodo> {
       "hours": hours,
       "minutes": minutes,
       "goal": goal,
-      "username": currentUser.username
+      "username": currentUser.username,
+      "complete_time": 0,
+      "complete_day": 0,
     });
   }
 
@@ -119,6 +122,7 @@ class _AddTodoState extends State<AddTodo> {
                         pageController.animateToPage(0,
                             duration: Duration(milliseconds: 300),
                             curve: Curves.easeInOut);
+                        captionController.clear();
                       },
                     ),
                   ],
