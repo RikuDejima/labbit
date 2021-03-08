@@ -10,6 +10,7 @@ import 'package:labbit/widgets/header.dart';
 import 'package:labbit/pages/timer.dart';
 import 'package:labbit/pages/notification.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:labbit/models/stop_watch_model.dart';
 
 PageController pageController;
 final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -145,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Text('読込中...'),
                     );
                   }),
-              Timer(),
+              StopWatch(),
               Notifications(),
               AddTodo(),
             ],

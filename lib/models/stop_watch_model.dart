@@ -1,14 +1,19 @@
-class StopWatchModel extends ChangeNotifier {
-  bool isStopPressed = true;
-  bool isResetPressed = true;
-  bool isStartPressed = true;
+import 'package:flutter/material.dart';
+import 'package:labbit/pages/timer.dart';
+import 'dart:async';
 
+bool isStopPressed = true;
+bool isResetPressed = true;
+bool isStartPressed = true;
+String timerButtonName = "PLAY";
+
+class StopWatchModel extends ChangeNotifier {
   String stopWatchTimeDisplay = '00:00:00';
   var swatch = Stopwatch();
   final dul = const Duration(seconds: 1);
 
   startTimer() {
-    Timer(dul, keepRunning);
+    return Timer(dul, keepRunning);
   }
 
   keepRunning() {
@@ -25,23 +30,25 @@ class StopWatchModel extends ChangeNotifier {
   }
 
   startStopWatch() {
-    this.isStopPressed = false;
-    this.isStartPressed = true;
+    isStopPressed = false;
+    isStartPressed = true;
     swatch.start();
     startTimer();
     notifyListeners();
+    // timerButtonName = "STOP";
   }
 
   stopStopWatch() {
-    this.isStopPressed = true;
-    this.isResetPressed = false;
+    isStopPressed = true;
+    isResetPressed = false;
     swatch.stop();
     notifyListeners();
+    // timerButtonName = "PLAY";
   }
 
   resetStopWatch() {
-    this.isResetPressed = true;
-    this.isStartPressed = true;
+    isResetPressed = true;
+    isStartPressed = true;
     swatch.reset();
     stopWatchTimeDisplay = '00:00:00';
     notifyListeners();
