@@ -138,7 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: documents.map((document) {
                           return Card(
                             child: ListTile(
-                              title: Text(document['habit']),
+                              title: Text(document.id),
                             ),
                           );
                         }).toList(),
