@@ -20,11 +20,11 @@ class _AddTodoState extends State<AddTodo> {
 
   createPostInFirestore(habit, hours, minutes, goal) {
     postsRef.doc(currentUser.id).collection("usersPosts").doc().set({
-      "habit": habit,
-      "hours": hours,
-      "minutes": minutes,
-      "goal": goal,
       "username": currentUser.username,
+      "habit": habit,
+      "goal": goal,
+      "targetTime_hours": hours,
+      "targetTime_minutes": minutes,
       "complete_time": 0,
       "complete_day": 0,
     });
