@@ -56,6 +56,8 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  // stopWatch.getPostsData();
+
   handleSignIn(GoogleSignInAccount account) {
     if (account != null) {
       createUserInFirestore();

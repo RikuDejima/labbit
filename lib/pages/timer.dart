@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:labbit/models/stop_watch_model.dart';
 import 'package:provider/provider.dart';
+import 'package:labbit/pages/home.dart';
+import 'package:flutter_picker/flutter_picker.dart';
 
 class StopWatch extends StatefulWidget {
   @override
@@ -8,6 +12,38 @@ class StopWatch extends StatefulWidget {
 }
 
 class _StopWatchState extends State<StopWatch> {
+  List<String> habits = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getPostsData();
+    final DateTime datetime = DateTime.now();
+    // print(time_now.add(datetime));
+  }
+
+  getPostsData() async {
+    QuerySnapshot snapshot =
+        await postsRef.doc(user.id).collection("usersPosts").get();
+
+    habits = [];
+    setState(() {
+      for (var i = 0; i < snapshot.docs.length; i++) {
+        var habit = snapshot.docs[i].data()['habit'];
+        habits.add("$habit");
+      }
+    });
+    print(habits);
+  }
+
+  Widget pickerHabits(String str) {
+    return Text(
+      str,
+      style: const TextStyle(fontSize: 32),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,6 +95,76 @@ class _StopWatchState extends State<StopWatch> {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 40.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      RaisedButton(
+                          child: Text(
+                            "記録する",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          color: Color(0xffFF962C),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          onPressed: () {
+                            showModalBottomSheet(
+                                context: context,
+                                // barrierDismissible:
+                                //     false, // dialog is dismissible with a tap on the barrier
+                                builder: (BuildContext context) => Container(
+                                    height:
+                                        MediaQuery.of(context).size.height / 2,
+                                    child: Column(children: [
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          CupertinoButton(
+                                            child: Text(
+                                              "閉じる",
+                                              style: TextStyle(
+                                                  color: Colors.lightBlue),
+                                            ),
+                                            onPressed: () =>
+                                                Navigator.pop(context),
+                                          ),
+                                          CupertinoButton(
+                                            child: Text(
+                                              "決定",
+                                              style: TextStyle(
+                                                  color: Colors.lightBlue),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              // setState(() {
+                                              //   _initialAge = _selectedAge;
+                                              // });
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                      Container(
+                                        height:
+                                            MediaQuery.of(context).size.height /
+                                                3,
+                                        child: CupertinoPicker(
+                                          itemExtent: 40,
+                                          children:
+                                              habits.map(pickerHabits).toList(),
+                                          // onSelectedItemChanged: _onSelectedItemChanged_age,
+                                        ),
+                                      )
+                                    ] // ボタンの配置
+                                        )));
+                          })
+                    ],
+                  )
                   // const SizedBox(height: 20.0),
                 ],
               );
