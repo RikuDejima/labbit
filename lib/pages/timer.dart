@@ -13,6 +13,7 @@ class StopWatch extends StatefulWidget {
 
 class _StopWatchState extends State<StopWatch> {
   List<String> habits = [];
+  String selectedHabit;
 
   @override
   void initState() {
@@ -35,6 +36,32 @@ class _StopWatchState extends State<StopWatch> {
       }
     });
     print(habits);
+  }
+
+  void _onSelectedItemChanged_habit(int index) {
+    setState(() {
+      selectedHabit = habits[index];
+    });
+  }
+
+  void addCompleteTime() async {
+    final DocumentSnapshot target_habit = await postsRef
+        .doc(user.id)
+        .collection("userPosts")
+        .doc(selectedHabit)
+        .get();
+
+    Map<String, dynamic> habit_data = await target_habit.data();
+    // if (!habit_data.isEmpty) {
+    //   print("へい！");
+    //   // postsRef
+    //   //     .doc()
+    //   //     .collection("usersPosts")
+    //   //     .doc(selectedHabit)
+    //   //     .update({first_time: "へい"});
+    // }
+
+    print(habit_data["goal"]);
   }
 
   Widget pickerHabits(String str) {
@@ -142,6 +169,7 @@ class _StopWatchState extends State<StopWatch> {
                                             ),
                                             onPressed: () {
                                               Navigator.pop(context);
+                                              addCompleteTime();
                                               // setState(() {
                                               //   _initialAge = _selectedAge;
                                               // });
@@ -157,7 +185,8 @@ class _StopWatchState extends State<StopWatch> {
                                           itemExtent: 40,
                                           children:
                                               habits.map(pickerHabits).toList(),
-                                          // onSelectedItemChanged: _onSelectedItemChanged_age,
+                                          onSelectedItemChanged:
+                                              _onSelectedItemChanged_habit,
                                         ),
                                       )
                                     ] // ボタンの配置

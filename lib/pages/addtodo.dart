@@ -23,7 +23,6 @@ class _AddTodoState extends State<AddTodo> {
 
     postsRef.doc(currentUser.id).collection("usersPosts").doc(habit).set({
       "username": currentUser.username,
-      "habit": habit,
       "goal": goal,
       "targetTime_hours": hours,
       "targetTime_minutes": minutes,
