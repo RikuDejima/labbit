@@ -13,7 +13,7 @@ class StopWatch extends StatefulWidget {
 
 class _StopWatchState extends State<StopWatch> {
   List<String> habits = [];
-  dynamic selectedHabit;
+  String selectedHabit;
 
   @override
   void initState() {
@@ -40,28 +40,34 @@ class _StopWatchState extends State<StopWatch> {
 
   void _onSelectedItemChanged_habit(int index) {
     setState(() {
-      selectedHabit = habits[0];
+      selectedHabit = habits[index];
     });
   }
 
   void addCompleteTime() async {
-    final DocumentSnapshot target_habit = await postsRef
+    _onSelectedItemChanged_habit(0);
+    DocumentSnapshot target_habit = await postsRef
         .doc(user.id)
-        .collection("userPosts")
-        .doc(selectedHabit)
+        .collection("usersPosts")
+        .doc("$selectedHabit")
         .get();
 
     Map<String, dynamic> habit_data = await target_habit.data();
-    // if (!habit_data.isEmpty) {
-    //   print("へい！");
-    //   // postsRef
-    //   //     .doc()
-    //   //     .collection("usersPosts")
-    //   //     .doc(selectedHabit)
-    //   //     .update({first_time: "へい"});
-    // }
 
-    print(habit_data["goal"]);
+    if (habit_data["first_time"] != null) {
+      print("へい！");
+      postsRef
+          .doc(user.id)
+          .collection("usersPosts")
+          .doc(selectedHabit)
+          .update({"first_time": DateTime.now()});
+    } else {
+      print("hello");
+    }
+
+    print(habits);
+    print(habit_data["habit"]);
+    print(StopWatchModel().stopWatchTimeDisplay);
   }
 
   Widget pickerHabits(String str) {
@@ -101,7 +107,9 @@ class _StopWatchState extends State<StopWatch> {
                         child: RaisedButton(
                           color: Colors.redAccent,
                           child: Text(
-                            timerButtonName,
+                            isStopPressed
+                                ? timerButtonName_P
+                                : timerButtonName_S,
                           ),
                           onPressed: isStopPressed
                               ? model.startStopWatch

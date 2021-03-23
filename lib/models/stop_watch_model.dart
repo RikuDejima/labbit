@@ -5,7 +5,8 @@ import 'dart:async';
 bool isStopPressed = true;
 bool isResetPressed = true;
 bool isStartPressed = true;
-String timerButtonName = "PLAY";
+String timerButtonName_P = "PLAY";
+String timerButtonName_S = "STOP";
 
 class StopWatchModel extends ChangeNotifier {
   String stopWatchTimeDisplay = '00:00:00';
