@@ -13,7 +13,7 @@ class StopWatch extends StatefulWidget {
 
 class _StopWatchState extends State<StopWatch> {
   List<String> habits = [];
-  String selectedHabit;
+  dynamic selectedHabit;
 
   @override
   void initState() {
@@ -40,7 +40,7 @@ class _StopWatchState extends State<StopWatch> {
 
   void _onSelectedItemChanged_habit(int index) {
     setState(() {
-      selectedHabit = habits[index];
+      selectedHabit = habits[0];
     });
   }
 
