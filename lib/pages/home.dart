@@ -11,6 +11,7 @@ import 'package:labbit/pages/timer.dart';
 import 'package:labbit/pages/notification.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:labbit/models/stop_watch_model.dart';
+import 'package:labbit/models/stop_watch_model.dart';
 
 PageController pageController;
 final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -23,6 +24,7 @@ final CollectionReference postsRef =
 final DateTime timestamp = DateTime.now();
 final GoogleSignInAccount user = googleSignIn.currentUser;
 User currentUser;
+
 //グーグルサイン認証、firebaseでtodoの更新などを行う
 
 class MyHomePage extends StatefulWidget {

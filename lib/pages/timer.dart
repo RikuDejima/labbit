@@ -14,6 +14,7 @@ class StopWatch extends StatefulWidget {
 class _StopWatchState extends State<StopWatch> {
   List<String> habits = [];
   String selectedHabit;
+  StopWatchModel model = StopWatchModel();
 
   @override
   void initState() {
@@ -31,7 +32,7 @@ class _StopWatchState extends State<StopWatch> {
     habits = [];
     setState(() {
       for (var i = 0; i < snapshot.docs.length; i++) {
-        var habit = snapshot.docs[i].data()['habit'];
+        var habit = snapshot.docs[i].id;
         habits.add("$habit");
       }
     });
@@ -67,7 +68,8 @@ class _StopWatchState extends State<StopWatch> {
 
     print(habits);
     print(habit_data["habit"]);
-    print(StopWatchModel().stopWatchTimeDisplay);
+    print(stopWatchTimeDisplay);
+    print(DateTime.now());
   }
 
   Widget pickerHabits(String str) {
@@ -92,7 +94,7 @@ class _StopWatchState extends State<StopWatch> {
                   Container(
                     alignment: Alignment.center,
                     child: Text(
-                      model.stopWatchTimeDisplay,
+                      stopWatchTimeDisplay,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 50.0,
@@ -106,11 +108,7 @@ class _StopWatchState extends State<StopWatch> {
                         padding: const EdgeInsets.only(left: 50, right: 8),
                         child: RaisedButton(
                           color: Colors.redAccent,
-                          child: Text(
-                            isStopPressed
-                                ? timerButtonName_P
-                                : timerButtonName_S,
-                          ),
+                          child: Text(timerButtonName),
                           onPressed: isStopPressed
                               ? model.startStopWatch
                               : model.stopStopWatch,
