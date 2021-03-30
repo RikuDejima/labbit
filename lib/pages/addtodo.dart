@@ -122,7 +122,7 @@ class _AddTodoState extends State<AddTodo> {
                       onPressed: () {
                         createPostInFirestore(habit, hours, minutes, goal);
                         pageController.animateToPage(0,
-                            duration: Duration(milliseconds: 300),
+                            duration: Duration(milliseconds: 500),
                             curve: Curves.easeInOut);
                         captionController.clear();
                       },

@@ -117,8 +117,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   onTap(int pageIndex) {
-    pageController.animateToPage(pageIndex,
-        duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+    pageController.animateToPage(
+      pageIndex,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
   }
 
   buildAuthScreen() {

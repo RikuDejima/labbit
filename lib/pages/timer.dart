@@ -21,15 +21,14 @@ class _StopWatchState extends State<StopWatch> {
     // TODO: implement initState
     super.initState();
     getPostsData();
-    final DateTime datetime = DateTime.now();
-    // print(time_now.add(datetime));
+    // final DateTime datetime = DateTime.now();
+    // // print(time_now.add(datetime));
   }
 
   getPostsData() async {
     QuerySnapshot snapshot =
         await postsRef.doc(user.id).collection("usersPosts").get();
 
-    habits = [];
     setState(() {
       for (var i = 0; i < snapshot.docs.length; i++) {
         var habit = snapshot.docs[i].id;
@@ -45,31 +44,64 @@ class _StopWatchState extends State<StopWatch> {
     });
   }
 
-  void addCompleteTime() async {
-    _onSelectedItemChanged_habit(0);
+  void pressedRecordButton() async {
+    setState(() {
+      stopWatchTimeDisplay = "00:00:00";
+    });
+
+    if (habits.length == 1) {
+      selectedHabit = habits[0];
+    }
+
     DocumentSnapshot target_habit = await postsRef
         .doc(user.id)
         .collection("usersPosts")
-        .doc("$selectedHabit")
+        .doc(selectedHabit)
         .get();
 
-    Map<String, dynamic> habit_data = await target_habit.data();
+    Map<String, dynamic> habit_data = target_habit.data();
 
-    if (habit_data["first_time"] != null) {
-      print("へい！");
+    List<String> record_time = stopWatchTimeDisplay.split(":");
+
+    if (habit_data["first_time"] == null) {
       postsRef
           .doc(user.id)
           .collection("usersPosts")
           .doc(selectedHabit)
           .update({"first_time": DateTime.now()});
+      final DateTime first_time = DateTime.now();
+      final added_time = first_time.add(Duration(
+        hours: int.parse(record_time[0]),
+        minutes: int.parse(record_time[1]),
+        seconds: int.parse(record_time[2]),
+      ));
+
+      postsRef
+          .doc(user.id)
+          .collection("usersPosts")
+          .doc(selectedHabit)
+          .update({"complete_time": added_time});
     } else {
-      print("hello");
+      final complete_time = habit_data["complete_time"].toDate();
+
+      final added_time = complete_time.add(Duration(
+        hours: int.parse(record_time[0]),
+        minutes: int.parse(record_time[1]),
+        seconds: int.parse(record_time[2]),
+      ));
+
+      postsRef
+          .doc(user.id)
+          .collection("usersPosts")
+          .doc(selectedHabit)
+          .update({"complete_time": added_time});
     }
 
-    print(habits);
-    print(habit_data["habit"]);
-    print(stopWatchTimeDisplay);
-    print(DateTime.now());
+    pageController.animateToPage(
+      0,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
   }
 
   Widget pickerHabits(String str) {
@@ -175,10 +207,7 @@ class _StopWatchState extends State<StopWatch> {
                                             ),
                                             onPressed: () {
                                               Navigator.pop(context);
-                                              addCompleteTime();
-                                              // setState(() {
-                                              //   _initialAge = _selectedAge;
-                                              // });
+                                              pressedRecordButton();
                                             },
                                           ),
                                         ],
