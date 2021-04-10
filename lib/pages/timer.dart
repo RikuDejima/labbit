@@ -45,13 +45,18 @@ class _StopWatchState extends State<StopWatch> {
   }
 
   void pressedRecordButton() async {
+    List<String> record_time = stopWatchTimeDisplay.split(":");
+
     setState(() {
-      stopWatchTimeDisplay = "00:00:00";
+      model.resetStopWatch();
     });
 
-    if (habits.length == 1) {
+    if (habits.length == 1 || selectedHabit == null) {
       selectedHabit = habits[0];
     }
+
+    print(habits);
+    print(selectedHabit);
 
     DocumentSnapshot target_habit = await postsRef
         .doc(user.id)
@@ -61,21 +66,20 @@ class _StopWatchState extends State<StopWatch> {
 
     Map<String, dynamic> habit_data = target_habit.data();
 
-    List<String> record_time = stopWatchTimeDisplay.split(":");
-
     if (habit_data["first_time"] == null) {
+      final DateTime first_time = DateTime.now();
       postsRef
           .doc(user.id)
           .collection("usersPosts")
           .doc(selectedHabit)
-          .update({"first_time": DateTime.now()});
-      final DateTime first_time = DateTime.now();
+          .update({"first_time": first_time});
       final added_time = first_time.add(Duration(
         hours: int.parse(record_time[0]),
         minutes: int.parse(record_time[1]),
         seconds: int.parse(record_time[2]),
       ));
 
+      print(added_time);
       postsRef
           .doc(user.id)
           .collection("usersPosts")
@@ -84,11 +88,16 @@ class _StopWatchState extends State<StopWatch> {
     } else {
       final complete_time = habit_data["complete_time"].toDate();
 
+      print(complete_time);
+      print(record_time);
+
       final added_time = complete_time.add(Duration(
         hours: int.parse(record_time[0]),
         minutes: int.parse(record_time[1]),
         seconds: int.parse(record_time[2]),
       ));
+
+      print(added_time);
 
       postsRef
           .doc(user.id)
