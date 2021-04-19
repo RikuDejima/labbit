@@ -28,29 +28,48 @@ const db = admin.firestore();
 // const batch = db.batch();
 
 const postsRef = db.collection('posts');
+// const func = functions.logger 
 // .doc('112863960669202701170').collection("usersPosts");
 
 // let now = DateTime().now();
 
-exports.restPostsData = functions.region('asia-northeast1')
-  .pubsub.schedule('0 0 * * *').timeZone('Asia/Tokyo').onRun( async () => {
-
-    postsRef.get().then( snapshot => {
-      snapshot.forEach(doc => {
-
-        var usersPostsRef = postsRef.doc(doc.id).collection("usersPosts")
-
-        usersPostsRef.get().then( snapshots => {
-          snapshots.forEach(docs => {
-
-            usersPostsRef.doc(docs.id).ref().update(
-              {complete_day: 20}
-            );
-          });
+exports.restPostsData = functions.https.onRequest((request, response) => {
+    response.status(200).send('whatsup!');
+    postsRef.get().then( snapshot => { //posts.doc()
+      
+      console.log(snapshot,"スナップショット")
+        snapshot.docs.map(doc => {  
+          
+          try {
+            console.log("ハロー絶望");
+            console.log(doc,"ドック");
+            console.log(doc.id, "ID");
+            var usersPostsRef = postsRef.doc(doc.id).collection("usersPosts"); // doc 数学,筋トレ
+    
+            console.log(usersPostsRef,"usersPostsRef");
+            // usersPostsRef.map(doc => {
+            //   console.log(doc);
+            //   console.log(doc.id, "ID");
+            //   console.log(doc.data());
+            // });
+            usersPostsRef.get().then( snapshot => {
+              console.log(snapshot,"スナップショット")
+              snapshot.forEach(doc => {
+                console.log(doc);
+                console.log(doc.id, "ID");
+                console.log(doc.data());
+                usersPostsRef.doc(doc.id).ref().update({
+                  "complete_day":0
+                })
+              })
+            })
+          } catch(e) {
+            console.log(e.message);
+          }
         });
-      });
+      
     });
 
-    // batch.update(postsRef, {complete_day: 30})
-    // await batch.commit();
+  
+    // func.log("ok")
 });
