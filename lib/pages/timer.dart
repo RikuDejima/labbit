@@ -19,6 +19,7 @@ class _StopWatchState extends State<StopWatch> {
   @override
   void initState() {
     // TODO: implement initState
+
     super.initState();
     getPostsData();
     // final DateTime datetime = DateTime.now();
@@ -36,6 +37,10 @@ class _StopWatchState extends State<StopWatch> {
       }
     });
     print(habits);
+
+    // DocumentSnapshot userPost = await postsRef.doc(user.id).get();
+    //
+    // userPost.map();
   }
 
   void _onSelectedItemChanged_habit(int index) {
@@ -73,7 +78,7 @@ class _StopWatchState extends State<StopWatch> {
           .collection("usersPosts")
           .doc(selectedHabit)
           .update({"first_time": first_time});
-      final added_time = first_time.add(Duration(
+      final DateTime added_time = first_time.add(Duration(
         hours: int.parse(record_time[0]),
         minutes: int.parse(record_time[1]),
         seconds: int.parse(record_time[2]),

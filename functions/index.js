@@ -30,37 +30,35 @@ const db = admin.firestore();
 const postsRef = db.collection('posts');
 // const func = functions.logger 
 // .doc('112863960669202701170').collection("usersPosts");
-
 // let now = DateTime().now();
 
 exports.restPostsData = functions.https.onRequest((request, response) => {
     response.status(200).send('whatsup!');
     postsRef.get().then( snapshot => { //posts.doc()
-      
-      console.log(snapshot,"スナップショット")
         snapshot.docs.map(doc => {  
-          
+          console.log(doc.id);
           try {
-            console.log("ハロー絶望");
-            console.log(doc,"ドック");
-            console.log(doc.id, "ID");
-            var usersPostsRef = postsRef.doc(doc.id).collection("usersPosts"); // doc 数学,筋トレ
+            const usersPostsRef = postsRef.doc(doc.id).collection("usersPosts"); // doc 数学,筋トレ
     
-            console.log(usersPostsRef,"usersPostsRef");
-            // usersPostsRef.map(doc => {
-            //   console.log(doc);
-            //   console.log(doc.id, "ID");
-            //   console.log(doc.data());
-            // });
             usersPostsRef.get().then( snapshot => {
-              console.log(snapshot,"スナップショット")
+              // if (snapshot.exists){
+              //   console.log("へい！")
+              // }
               snapshot.forEach(doc => {
-                console.log(doc);
-                console.log(doc.id, "ID");
-                console.log(doc.data());
-                usersPostsRef.doc(doc.id).ref().update({
-                  "complete_day":0
-                })
+                const habit_data = doc.data()
+                const firstTime_Date = habit_data["first_time"].toDate()
+                const completeTime_Date = habit_data["complete_time"].toDate()
+                const targetTime_hours = Number(habit_data["targetTime_hours"])
+                const targetTime_minites = Number(habit_data["targetTime_minutes"])
+                firstTime_Date.setHours(firstTime_Date.getHours() + targetTime_hours)
+                firstTime_Date.setMinutes(firstTime_Date.getHours() + targetTime_minites)
+                const addedFirstTime = firstTime_Date
+                
+                if(completeTime_Date > addedFirstTime){
+                  usersPostsRef.doc(doc.id).update({
+                    "complete_day":0
+                  })  
+                }
               })
             })
           } catch(e) {
