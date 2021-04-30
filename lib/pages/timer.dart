@@ -71,7 +71,7 @@ class _StopWatchState extends State<StopWatch> {
 
     Map<String, dynamic> habit_data = target_habit.data();
 
-    if (habit_data["first_time"] == null) {
+    if (habit_data["first_time"] == 0) {
       final DateTime first_time = DateTime.now();
       postsRef
           .doc(user.id)
