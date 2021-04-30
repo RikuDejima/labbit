@@ -5,7 +5,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:labbit/pages/create_account.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:labbit/models/user.dart';
-import 'package:labbit/pages/addtodo.dart';
+import 'package:labbit/pages/add_todo.dart';
+import 'package:labbit/pages/habit_detail.dart';
 import 'package:labbit/widgets/header.dart';
 import 'package:labbit/pages/timer.dart';
 import 'package:labbit/pages/notification.dart';
@@ -144,6 +145,13 @@ class _MyHomePageState extends State<MyHomePage> {
                           return Card(
                             child: ListTile(
                               title: Text(document.id),
+                              onTap: () {
+                                pageController.animateToPage(
+                                  4,
+                                  duration: Duration(milliseconds: 500),
+                                  curve: Curves.easeInOut,
+                                );
+                              },
                             ),
                           );
                         }).toList(),
@@ -156,6 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
               StopWatch(),
               Notifications(),
               AddTodo(),
+              HabitDetail(),
             ],
             controller: pageController,
             onPageChanged: onPageChanged,
