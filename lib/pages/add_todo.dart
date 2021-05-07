@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:labbit/pages/home.dart';
 import 'package:labbit/models/user.dart';
+import 'package:labbit/utils/firebase.dart';
 
 class AddTodo extends StatefulWidget {
   final User currentUser;
@@ -18,12 +20,12 @@ class _AddTodoState extends State<AddTodo> {
   String minutes = "";
   String goal = "";
 
-  createPostInFirestore(habit, hours, minutes, goal) {
+  createPostInFirestore(habit, hours, minutes, goal) async {
     // postsRef.doc(currentUser.id).set({
     //   "username": currentUser.username,
     // });
 
-    postsRef.doc(habit).set({
+    postsRef.doc(user.id).collection("usersPosts").doc(habit).set({
       "username": currentUser.username,
       "goal": goal,
       "targetTime_hours": hours,
@@ -32,6 +34,10 @@ class _AddTodoState extends State<AddTodo> {
       "complete_day": 0,
       "first_time": null,
     });
+
+    QuerySnapshot snapshot =
+        await postsRef.doc(user.id).collection("usersPosts").get();
+    postsRef.doc(user.id).set({"habitLength": snapshot.docs.length});
   }
 
   @override

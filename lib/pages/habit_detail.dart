@@ -17,7 +17,10 @@ class _HabitDetailState extends State<HabitDetail> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final Future<int> docs_length = fireStore.getPostsData("docs_length")
+
+    setState(() {
+      fireStore.getPostsData();
+    });
 
     return Container(
         child: SingleChildScrollView(
@@ -33,7 +36,7 @@ class _HabitDetailState extends State<HabitDetail> {
             physics: ClampingScrollPhysics(),
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
-            itemCount: docs_length,
+            itemCount: habitLength,
             itemBuilder: (BuildContext context, int index) => Card(
               child: Center(child: Text('Dummy Card Text')),
             ),

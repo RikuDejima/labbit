@@ -11,19 +11,10 @@ import 'package:labbit/widgets/header.dart';
 import 'package:labbit/pages/timer.dart';
 import 'package:labbit/pages/notification.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:labbit/models/stop_watch_model.dart';
-import 'package:labbit/models/stop_watch_model.dart';
+import 'package:labbit/utils/firebase.dart';
 
+DateTime timestamp = DateTime.now();
 PageController pageController;
-final GoogleSignIn googleSignIn = GoogleSignIn();
-FirebaseFirestore firestore = FirebaseFirestore.instance;
-final dynamic storageRef = FirebaseStorage.instance.ref();
-final CollectionReference usersRef =
-    FirebaseFirestore.instance.collection('users');
-final CollectionReference postsRef =
-    FirebaseFirestore.instance.collection('posts');
-final DateTime timestamp = DateTime.now();
-final GoogleSignInAccount user = googleSignIn.currentUser;
 User currentUser;
 
 //グーグルサイン認証、firebaseでtodoの更新などを行う

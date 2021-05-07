@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:labbit/models/stop_watch_model.dart';
 import 'package:provider/provider.dart';
 import 'package:labbit/pages/home.dart';
+import 'package:labbit/utils/firebase.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 
 class StopWatch extends StatefulWidget {
