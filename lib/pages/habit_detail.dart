@@ -31,14 +31,27 @@ class _HabitDetailState extends State<HabitDetail> {
         ),
         SizedBox(
           height: size.height - 150.0,
-          width: size.width + 300,
+          // width: size.width + 900,
           child: ListView.builder(
             physics: ClampingScrollPhysics(),
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             itemCount: habitLength,
             itemBuilder: (BuildContext context, int index) => Card(
-              child: Center(child: Text('Dummy Card Text')),
+              margin: EdgeInsets.all(20.0),
+              child: Container(
+                padding: EdgeInsets.only(
+                    left: size.width / 2 - 150, right: size.width / 2 - 150),
+                child: Row(
+                  children: [
+                    Text(
+                      "100日間継続中",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 30.0),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
