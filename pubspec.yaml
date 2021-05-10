@@ -23,6 +23,7 @@ dependencies:
   firebase_auth: ^1.0.0
   google_sign_in: ^4.5.9
   flutter_picker: ^1.1.5
+  scrollable_positioned_list: ^0.1.10
 #  geolocator: 5.0.1
 #  uuid: ^2.0.0
 #  image: ^2.0.7

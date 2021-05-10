@@ -12,17 +12,19 @@ final CollectionReference postsRef =
     FirebaseFirestore.instance.collection('posts');
 final GoogleSignInAccount user = googleSignIn.currentUser;
 
-Map<String, dynamic> docsLength;
 int habitLength;
+Map<String, dynamic> postsDocData;
+DocumentSnapshot usersPostSnapshot;
+QuerySnapshot usersPostsHabitSnapshot;
+List habits = [];
+List habitData = [];
 
-class FireStore {
-  getPostsData() async {
-    DocumentSnapshot usersPostsSnapshot = await postsRef.doc(user.id).get();
+void getPostsData() async {
+  usersPostSnapshot = await postsRef.doc(user.id).get();
 
-    docsLength = usersPostsSnapshot.data();
-
-    print(docsLength["habitLength"]);
-    print(docsLength["habitLength"].runtimeType);
-    return habitLength = docsLength["habitLength"];
-  }
+  postsDocData = usersPostSnapshot.data();
+  habitLength = postsDocData["habitLength"];
+  usersPostsHabitSnapshot =
+      await postsRef.doc(user.id).collection("usersPosts").get();
+  habits = usersPostsHabitSnapshot.docs;
 }
